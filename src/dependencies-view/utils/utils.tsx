@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { CommandKey, DependencyItemType, InstalledItemType, InstallKey } from './types';
 
 const existRecursiveDependency = (
@@ -145,60 +145,62 @@ const endFn = (outputContent: string[]): void => {
   outputContent.push('END');
 }
 
+export const handleFileContentArray = (
+    fileContentArray: string[],
+    setOutputContent: (items: string[]) => void
+  ): void => {
+  let dependenciesList: DependencyItemType[] = []
+  let installedList: InstalledItemType[] = []
+  let nameItem: string = '';
+  let outputContent: string[] = [];
+
+  fileContentArray.forEach((item) => {
+    const commandItem = item.indexOf(' ') > 0 ? item.substring(0, item.indexOf(' ')) : item;
+    switch (commandItem) {
+      case CommandKey.DEPEND:
+        dependenciesFn(item, dependenciesList, outputContent);
+        break;
+      case CommandKey.INSTALL:
+        nameItem = item.split(' ')[1];
+        installFn(nameItem, InstallKey.EXPLICITLY, dependenciesList, installedList, outputContent);
+        break;
+      case CommandKey.LIST:
+        listFn(installedList, outputContent);
+        break;
+      case CommandKey.REMOVE:
+        nameItem = item.split(' ')[1];
+        removeFn(nameItem, installedList, dependenciesList, outputContent, false);
+        break;
+      case CommandKey.END:
+        endFn(outputContent);
+        break;
+    }
+  });
+
+  setOutputContent(outputContent);
+}
+
 export const handleOnChange = (
-    event: ChangeEvent<HTMLInputElement>, 
+    files: FileList | null,
     setInputContent: (content: string[]) => void,
     setOutputContent: (items: string[]) => void
     ): void => {
       
-    const input = event.target as HTMLInputElement;
-
-    if (!input.files?.length) {
+    if (!files?.length) {
         return;
     }
 
-    const file = input.files[0];
+    const file = files[0];
     var reader = new FileReader();    
     reader.onload = function(progressEvent){
-
       const fileReturn = this.result as string;
-
       const fileContentArray: string[] = fileReturn.split(/\r\n|\n/);
-      setInputContent(fileContentArray);
-
-      let dependenciesList: DependencyItemType[] = []
-      let installedList: InstalledItemType[] = []
-      let nameItem: string = '';
-      let outputContent: string[] = [];
-
-      fileContentArray.forEach((item) => {
-        const commandItem = item.indexOf(' ') > 0 ? item.substring(0, item.indexOf(' ')) : item;
-        switch (commandItem) {
-          case CommandKey.DEPEND:
-            dependenciesFn(item, dependenciesList, outputContent);
-            break;
-          case CommandKey.INSTALL:
-            nameItem = item.split(' ')[1];
-            installFn(nameItem, InstallKey.EXPLICITLY, dependenciesList, installedList, outputContent);
-            break;
-          case CommandKey.LIST:
-            listFn(installedList, outputContent);
-            break;
-          case CommandKey.REMOVE:
-            nameItem = item.split(' ')[1];
-            removeFn(nameItem, installedList, dependenciesList, outputContent, false);
-            break;
-          case CommandKey.END:
-            endFn(outputContent);
-            break;
-        }
-      });
-
-      setOutputContent(outputContent);
+      setInputContent(fileContentArray);      
+      handleFileContentArray(fileContentArray, setOutputContent);
     };
     reader.readAsText(file);
 }
 
 export const showContent = (content: string[]): ReactElement => {
-  return <ul>{content.map((item, index) => <li key={index}> {item} </li>)}</ul>;
+  return <ul>{content.map((item, index) => <li key={index}>{item}</li>)}</ul>;
 }

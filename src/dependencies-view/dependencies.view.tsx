@@ -10,7 +10,8 @@ const DependenciesView: React.FunctionComponent = () => {
     const [ outputContent, setOutputContent ] =  React.useState<string[]>([]);
 
     const handleOnChangeFn = (event: ChangeEvent<HTMLInputElement>) => {
-        handleOnChange(event, setInputContent, setOutputContent);
+        const input = event.target as HTMLInputElement;
+        handleOnChange(input.files, setInputContent, setOutputContent);
     }
     
     return (
