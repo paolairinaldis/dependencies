@@ -98,9 +98,6 @@ const listFn = (
 const isDependency = (name: string, dependenciesList: DependencyItemType[], installedList: InstalledItemType[]): boolean => {
   const dependenciesListFilter = dependenciesList.filter(depItem => depItem.dependencies.find(dep => dep === name));
   dependenciesListFilter.filter(depItem => installedList.find(instItem => instItem.name === depItem.name));
-  dependenciesListFilter.filter(depItem => installedList.find(instItem => instItem.name === depItem.name));
-  dependenciesListFilter.filter(depItem => installedList.find(instItem => instItem.name !== depItem.name));
-
   return dependenciesListFilter.length ? true : false;
 }
 
