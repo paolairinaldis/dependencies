@@ -1,3 +1,12 @@
+
+
+To test the code after running the project you can upload a file, (test file in /docs/input.txt). 
+The main page of the application presents an input to upload the file with the command list.
+The application will present the input content and the list of commands executed.
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
