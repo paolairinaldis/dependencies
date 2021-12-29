@@ -24,7 +24,7 @@ const DependenciesView: React.FunctionComponent = () => {
             <br/>
             <br/>
             <p>Output Command List File:</p>
-            <Output outpuContent={outputContent}/>
+            <Output outputContent={outputContent}/>
         </div>
     );
   

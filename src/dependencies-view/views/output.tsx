@@ -2,13 +2,13 @@ import React from 'react';
 import { showContent } from '../utils/utils';
 
 interface OutputProps {
-    outpuContent: string[];
+    outputContent: string[];
 }
 
-const Output: React.FunctionComponent<OutputProps> = ({outpuContent}) => {  
+const Output: React.FunctionComponent<OutputProps> = ({outputContent}) => {  
     return (       
-            <div className="Output">
-                {showContent(outpuContent)}
+            <div className="OutputView">
+                {showContent(outputContent)}
           </div>
     );  
 }

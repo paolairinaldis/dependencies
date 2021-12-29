@@ -8,7 +8,7 @@ interface InputProps {
 const Input: React.FunctionComponent<InputProps> = ({inputContent}) => {
     
     return (       
-            <div className="Input">
+            <div className="InputView">
               {showContent(inputContent)}
             </div>
     );  
